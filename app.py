@@ -47,4 +47,5 @@ def show_results(request):
         '''
 
 if __name__ == "__main__":
-    app.run(threaded=True, port=8080)
+    port = int(os.getenv("PORT", "8080"))
+    app.run(threaded=True, port=port)
