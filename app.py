@@ -1,31 +1,44 @@
 from flask import Flask, request
 import subprocess
 from pathlib import Path
+import sys
 
 app = Flask(__name__)
-monaco = Path(__file__).parent / "bin/monaco.exe"
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
+monaco_bin = (Path(__file__).parent / "bin" / sys.platform / "monaco").absolute()
+page = (Path(__file__).parent / "html/index.html").absolute()
 
-@app.route('/monaco', methods=['GET', 'POST']) #allow both GET and POST requests
-def form_example():
+@app.route('/', methods=['GET', 'POST'])
+def monaco():
+    if request.method == "POST":
+        return show_results(request)
+    return page.read_text()
+
+def show_results(request):
     if request.method == 'POST':  #this block is only entered when the form is submitted
-        command = request.form.get('command')
+        expr = request.form.get('expr')
+        statistics = bool(request.form.get("statistics"))
+        histogram = bool(request.form.get("histogram"))
+        exact = bool(request.form.get("exact"))
+        iterations = int(request.form.get("iterations"))
 
-        if command:
-            p = subprocess.run(f"{monaco} {command}", shell=True, capture_output=True, text=True)
-            return f'''<h1>Command: {command}</h1>
-            Return code: {p.returncode}<br>
-            <pre>
-            {p.stdout}
-            </pre>
+        command = [str(monaco_bin)]
+        if statistics:
+            command.append("-statistics")
+        if histogram:
+            command.append("-histogram")
+        if exact:
+            command.append("-exact")
+        command.append(expr)
+        command.append(str(iterations))
+        print(command)
+        p = subprocess.run(command, capture_output=True, text=True)
+        return f'''<h1>Command: {command}</h1>
+        Return code: {p.returncode}<br>
+        <pre>
+        {p.stdout}
+        </pre>
         '''
-        else:
-            return '''No command given'''
 
-    return '''<form method="POST">
-                  Command: <input type="text" name="command"><br>
-                  <input type="submit" value="Submit"><br>
-              </form>'''
+if __name__ == "__main__":
+    app.run(threaded=True, port=5000)
