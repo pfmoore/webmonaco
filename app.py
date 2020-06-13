@@ -2,11 +2,17 @@ from flask import Flask, request
 import subprocess
 from pathlib import Path
 import sys
+import os
+import stat
 
 app = Flask(__name__)
 
 monaco_bin = (Path(__file__).parent / "bin" / sys.platform / "monaco").absolute()
 page = (Path(__file__).parent / "html/index.html").absolute()
+
+if sys.platform == "linux":
+    st = os.stat(monaco_bin)
+    os.chmod(monaco_bin, st.st_mode | stat.S_IEXEC)
 
 @app.route('/', methods=['GET', 'POST'])
 def monaco():
