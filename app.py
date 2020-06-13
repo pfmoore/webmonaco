@@ -38,7 +38,7 @@ def show_results(request):
         command.append(expr)
         command.append(str(iterations))
         print(command)
-        p = subprocess.run(command, capture_output=True, text=True)
+        p = subprocess.run(command, stdout=subprocess.PIPE, encoding="utf-8")
         return f'''<h1>Command: {command}</h1>
         Return code: {p.returncode}<br>
         <pre>
