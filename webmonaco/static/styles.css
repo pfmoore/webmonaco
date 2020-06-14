@@ -1,0 +1,10 @@
+body {
+    background-color: powderblue;
+}
+h1 {
+    color: blue;
+}
+
+#expr, #other_options, #out {
+    width: 100%;
+}
