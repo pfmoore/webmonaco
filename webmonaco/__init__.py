@@ -23,7 +23,7 @@ def index():
 @app.route("/monaco")
 def monaco():
     command = [str(monaco_bin)] + parse_options(request.args)
-    proc = subprocess.run(command, capture_output=True, text=True)
+    proc = subprocess.run(command, stdout=subprocess.PIPE, encoding="utf-8")
     return jsonify(dict(stdout=proc.stdout))
 
 
@@ -39,6 +39,8 @@ CHECKBOXES = [
 ]
 def parse_options(args):
     options = []
+    from pprint import pprint
+    pprint(args)
     for checkbox in CHECKBOXES:
         if args.get(checkbox):
             options.append("-" + checkbox)
