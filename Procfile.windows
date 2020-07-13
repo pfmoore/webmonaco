@@ -1,0 +1,1 @@
+web: python webmonaco/__init__.py

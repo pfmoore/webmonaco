@@ -6,11 +6,14 @@ import os
 import stat
 import shlex
 import traceback
+import tempfile
+
 
 monaco_bin = (Path(__file__).parent / f"bin/{sys.platform}/monaco").absolute()
 if sys.platform == "linux":
     st = os.stat(monaco_bin)
     os.chmod(monaco_bin, st.st_mode | stat.S_IEXEC)
+
 
 app = Flask(__name__)
 
@@ -19,6 +22,27 @@ def index():
     if request.method == "POST":
         return show_results(request)
     return render_template("index.html")
+
+@app.route("/test", methods=['POST'])
+def test():
+    if not request.json:
+        return "Error: Invalid JSON"
+    with tempfile.TemporaryDirectory() as d:
+        cmdfile = Path(d) / "monaco.data"
+        with cmdfile.open("w") as f:
+            # Suppress "press enter" pause...
+            print("-noprompt", file=f)
+            for opt in request.json.get("options", []):
+                print(opt, file=f)
+            expr = request.json["expr"]
+            if expr.startswith(("+", "-")):
+                expr = "$" + expr
+            print(expr, file=f)
+            n = request.json.get("count", 10000)
+            print("$", n, sep="", file=f)
+        command = [str(monaco_bin), str(cmdfile)]
+        proc = subprocess.run(command, stdout=subprocess.PIPE, encoding="utf-8")
+        return jsonify(dict(stdout=proc.stdout))
 
 @app.route("/monaco")
 def monaco():
