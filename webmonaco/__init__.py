@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 import subprocess
 from pathlib import Path
 import sys
@@ -16,6 +17,7 @@ if sys.platform == "linux":
 
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
