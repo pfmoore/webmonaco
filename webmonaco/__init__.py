@@ -25,26 +25,40 @@ def index():
         return show_results(request)
     return render_template("index.html")
 
-@app.route("/test", methods=['POST'])
+@app.route("/run", methods=['GET', 'POST'])
 def test():
-    if not request.json:
-        return "Error: Invalid JSON"
+    if request.method == "GET":
+        commands = []
+        for option_set in request.args.getlist("option"):
+            commands.append(option_set)
+        if "expr" in request.args:
+            commands.append("$" + request.args["expr"])
+        if "number" in request.args:
+            commands.append("$" + request.args["number"])
+        file_content = "\n".join(commands)
+    elif not request.is_json:
+        file_content = request.get_data(as_text=True)
+    else:
+        data = request.get_json()
+        commands = []
+        for option_set in data.get("options", []):
+            commands.append(option_set)
+        if "expr" in data:
+            commands.append("$" + data["expr"])
+        if "number" in data:
+            commands.append("$" + data["number"])
+        file_content = "\n".join(commands)
+
     with tempfile.TemporaryDirectory() as d:
         cmdfile = Path(d) / "monaco.data"
         with cmdfile.open("w") as f:
             # Suppress "press enter" pause...
             print("-noprompt", file=f)
-            for opt in request.json.get("options", []):
-                print(opt, file=f)
-            expr = request.json["expr"]
-            if expr.startswith(("+", "-")):
-                expr = "$" + expr
-            print(expr, file=f)
-            n = request.json.get("count", 10000)
-            print("$", n, sep="", file=f)
-        command = [str(monaco_bin), str(cmdfile)]
-        proc = subprocess.run(command, stdout=subprocess.PIPE, encoding="utf-8")
-        return jsonify(dict(stdout=proc.stdout))
+            print(file_content, file=f)
+        command = [str(monaco_bin), cmdfile.name]
+        proc = subprocess.run(command, capture_output=True, encoding="utf-8", cwd=d)
+
+        return {"returncode": proc.returncode, "stdout": proc.stdout, "stderr": proc.stderr, "commandfile": cmdfile.read_text()}
 
 @app.route("/monaco")
 def monaco():
