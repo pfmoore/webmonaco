@@ -56,7 +56,7 @@ def test():
             print("-noprompt", file=f)
             print(file_content, file=f)
         command = [str(monaco_bin), cmdfile.name]
-        proc = subprocess.run(command, capture_output=True, encoding="utf-8", cwd=d)
+        proc = subprocess.run(command, capture_output=True, input="", encoding="utf-8", cwd=d)
 
         return {"returncode": proc.returncode, "stdout": proc.stdout, "command": cmdfile.read_text()}
 
