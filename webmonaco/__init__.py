@@ -58,7 +58,7 @@ def test():
         command = [str(monaco_bin), cmdfile.name]
         proc = subprocess.run(command, capture_output=True, encoding="utf-8", cwd=d)
 
-        return {"returncode": proc.returncode, "stdout": proc.stdout}
+        return {"returncode": proc.returncode, "stdout": proc.stdout, "command": cmdfile.read_text()}
 
 @app.route("/monaco")
 def monaco():
