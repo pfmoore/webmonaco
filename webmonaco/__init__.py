@@ -52,8 +52,9 @@ def test():
     with tempfile.TemporaryDirectory() as d:
         cmdfile = Path(d) / "monaco.data"
         with cmdfile.open("w") as f:
-            # Suppress "press enter" pause...
+            # Suppress "press enter" pause, and disallow writing files
             print("-noprompt", file=f)
+            print("-nofiles", file=f)
             print(file_content, file=f)
         command = [str(monaco_bin), cmdfile.name]
         proc = subprocess.run(command, capture_output=True, input="", encoding="utf-8", cwd=d)
