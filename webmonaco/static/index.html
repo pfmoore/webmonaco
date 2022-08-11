@@ -63,6 +63,11 @@
                 document.getElementById('command').textContent = myJson.command;
             }
 
+            function deselect_sibling(me, sibling) {
+                if (me.checked) {
+                    document.getElementById(sibling).checked = false;
+                }
+            }
     </script>
 </head>
 <body>
@@ -84,12 +89,24 @@
             Output
         -->
         <div>
-            <div class="t"><label for="-exact">-exact</label><input type="checkbox" id="-exact" value="-exact"></div>
-            <div class="t"><label for="-new">-new</label><input type="checkbox" id="-new" value="-new"></div>
+            <div class="t">
+                <label for="-exact">-exact</label>
+                <input type="checkbox" id="-exact" value="-exact" onclick="deselect_sibling(this, '-new')">
+            </div>
+            <div class="t">
+                <label for="-new">-new</label>
+                <input type="checkbox" id="-new" value="-new" onclick="deselect_sibling(this, '-exact')">
+            </div>
         </div>
         <div>
-            <div class="t"><label for="-statistics">-statistics</label><input type="checkbox" id="-statistics" value="-statistics"></div>
-            <div class="t"><label for="+statistics">+statistics</label><input type="checkbox" id="+statistics" value="+statistics"></div>
+            <div class="t">
+                <label for="-statistics">-statistics</label>
+                <input type="checkbox" id="-statistics" value="-statistics" onclick="deselect_sibling(this, '+statistics')">
+            </div>
+            <div class="t">
+                <label for="+statistics">+statistics</label>
+                <input type="checkbox" id="+statistics" value="+statistics" onclick="deselect_sibling(this, '-statistics')">
+            </div>
         </div>
         <div class="t"><label for="-version">Program Info</label><input type="checkbox" id="-version" value="-version -size +date"></div>
         <div class="t"><label for="-histogram">-histogram</label><input type="checkbox" id="-histogram" value="-histogram"></div>
