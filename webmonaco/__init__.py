@@ -1,14 +1,13 @@
-from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS
-import subprocess
-from pathlib import Path
-import sys
 import os
 import stat
-import shlex
-import traceback
+import subprocess
+import sys
 import tempfile
+from importlib.resources import read_text
+from pathlib import Path
 
+from flask import Flask, jsonify, render_template, request
+from flask_cors import CORS
 
 monaco_bin = (Path(__file__).parent / f"bin/{sys.platform}/monaco").absolute()
 if sys.platform == "linux":
@@ -19,12 +18,15 @@ if sys.platform == "linux":
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/')
-def index():
-    return render_template("index.html")
 
-@app.route("/run", methods=['GET', 'POST'])
-def test():
+@app.route("/")
+def index():
+    with app.open_resource("index.html") as f:
+        return f.read()
+
+
+@app.route("/run", methods=["GET", "POST"])
+def run():
     if request.method == "GET":
         commands = []
         for option_set in request.args.getlist("option"):
@@ -55,9 +57,16 @@ def test():
             # print("-nofiles", file=f)
             print(file_content, file=f)
         command = [str(monaco_bin), cmdfile.name]
-        proc = subprocess.run(command, capture_output=True, input="", encoding="utf-8", cwd=d)
+        proc = subprocess.run(
+            command, capture_output=True, input="", encoding="utf-8", cwd=d
+        )
 
-        return {"returncode": proc.returncode, "stdout": proc.stdout, "command": cmdfile.read_text()}
+        return {
+            "returncode": proc.returncode,
+            "stdout": proc.stdout,
+            "command": cmdfile.read_text(),
+        }
+
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "8080"))
