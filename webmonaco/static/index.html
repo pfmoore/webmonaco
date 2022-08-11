@@ -68,6 +68,11 @@
                     document.getElementById(sibling).checked = false;
                 }
             }
+
+            function clear_output() {
+                document.getElementById('stdout').textContent = "Program output appears here";
+                document.getElementById('command').textContent = "Command file appears here";
+            }
     </script>
 </head>
 <body>
@@ -123,6 +128,7 @@
         </div>
         <div class="buttons">
         <input type="button" value="Calculate" onclick="submit_calculation()">
+        <input type="button" value="Clear Output" onclick="clear_output()">
         </div>
         <div class="output">
             <pre id="stdout">Program output appears here</pre>
