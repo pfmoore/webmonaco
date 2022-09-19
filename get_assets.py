@@ -10,6 +10,7 @@ API_URL = "https://api.github.com/repos/pfmoore/builder-monaco/releases"
 if len(sys.argv) < 2:
     raise SystemExit("Must provide a tag name")
 tag = sys.argv[1]
+print(f"Getting Monaco version {tag}")
 
 with urlopen(Request(API_URL, headers={"Accept": "application/vnd.github+json"})) as f:
     data = json.load(f)
