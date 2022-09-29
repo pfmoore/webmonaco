@@ -25,6 +25,12 @@ def index():
         return f.read()
 
 
+@app.route("/favicon.ico")
+def favicon():
+    with app.open_resource("img/favicon.ico") as f:
+        return f.read()
+
+
 @app.route("/run", methods=["GET", "POST"])
 def run():
     if request.method == "GET":
