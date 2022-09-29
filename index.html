@@ -1,150 +1,147 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+
 <head>
-    <style>
-        .frame {
-            width: 75%;
-            height: 50%;
-            background-color: aquamarine;
-            padding: 1rem;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <script>
+    const submit_calculation = async () => {
+        options = Array.from(document.getElementById("checkboxes").getElementsByTagName("input"))
+            .filter(c => c.checked)
+            .map(c => c.value)
+        opt = document.getElementById("options").value;
+        if (opt) { options.push(opt); }
+        expr = document.getElementById("expression").value;
+        number = document.getElementById("number").value;
+        body = {};
+        if (options) { body.options = options;}
+        if (expr) { body.expr = expr;}
+        if (number) { body.number = number;}
+        if (number && !expr) {
+            alert("Must supply an expression if you give a number of evaluations")
+            return
         }
-        .checkboxes {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            width: 50%;
-            margin: auto; /* Centres the div */
-            padding-bottom: 2rem; /* Space at the bottom */
-        }
-        .checkboxes>div {
-            background-color: bisque;
-            border-color: lightgray;
-            border-width: 1px;
-            border-style: solid;
-            padding: 0.5rem;
-        }
-        .textboxes {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            padding-bottom: 2rem; /* Space at the bottom */
-        }
-        .textboxes label {
-            padding-right: 1rem;
-        }
-        .t {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: center;
-        }
-    </style>
-    <script>
-        const submit_calculation = async () => {
-                options = Array.from(document.getElementById("checkboxes").getElementsByTagName("input"))
-                    .filter(c => c.checked)
-                    .map(c => c.value)
-                opt = document.getElementById("options").value;
-                if (opt) { options.push(opt); }
-                expr = document.getElementById("expression").value;
-                number = document.getElementById("number").value;
-                body = {};
-                if (options) { body.options = options;}
-                if (expr) { body.expr = expr;}
-                if (number) { body.number = number;}
-                if (number && !expr) {
-                    alert("Must supply an expression if you give a number of evaluations")
-                    return
-                }
 
-                const response = await fetch('/run', {
-                    method: "POST",
-                    body: JSON.stringify(body),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                const myJson = await response.json(); //extract JSON from the http response
-                const div_out = document.getElementById('stdout');
-                div_out.textContent = myJson.stdout;
-                const div_err = document.getElementById('stderr');
-                div_err.textContent = myJson.stderr;
-                document.getElementById('command').textContent = myJson.command;
+        const response = await fetch('/run', {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json'
             }
+        });
+        const myJson = await response.json(); //extract JSON from the http response
+        const div_out = document.getElementById('stdout');
+        div_out.textContent = myJson.stdout;
+        const div_err = document.getElementById('stderr');
+        div_err.textContent = myJson.stderr;
+        document.getElementById('command').textContent = myJson.command;
+    }
 
-            function deselect_sibling(me, sibling) {
-                if (me.checked) {
-                    document.getElementById(sibling).checked = false;
-                }
-            }
+    function deselect_sibling(me, sibling) {
+        if (me.checked) {
+            document.getElementById(sibling).checked = false;
+        }
+    }
 
-            function clear_output() {
-                document.getElementById('stdout').textContent = "Program output appears here";
-                document.getElementById('stderr').textContent = "Errors appear here";
-                document.getElementById('command').textContent = "Command file appears here";
-            }
-    </script>
+    function clear_output() {
+        document.getElementById('stdout').textContent = "Program output appears here";
+        document.getElementById('stderr').textContent = "Errors appear here";
+        document.getElementById('command').textContent = "Command file appears here";
+    }
+  </script>
 </head>
-<body>
-    <h1>Welcome to Monaco!</h1>
-    <div class="frame">
-    <form>
-        <div class="checkboxes" id="checkboxes">
-        <!--
-            -exact/-new     -statistics/+statistics     -version
-            -histogram      -cumulative                 -rcumulative
-            -table          -probability                -percent
 
-            Options
-            Expression
-            Number
+<body class="m-5 h-screen bg-fixed bg-gradient-to-tr from-slate-900 to-slate-700 text-slate-500">
+  <h1 class="text-3xl font-bold mb-8">
+    Welcome to Monaco!
+  </h1>
+  <div class="sm:w-1/2">
 
-            Submit
+    <!--
+      Checkbox Area
+      =============
 
-            Output
-        -->
-        <div>
-            <div class="t">
-                <label for="-exact">-exact</label>
-                <input type="checkbox" id="-exact" value="-exact" onclick="deselect_sibling(this, '-new')">
-            </div>
-            <div class="t">
-                <label for="-new">-new</label>
-                <input type="checkbox" id="-new" value="-new" onclick="deselect_sibling(this, '-exact')">
-            </div>
-        </div>
-        <div>
-            <div class="t">
-                <label for="-statistics">-statistics</label>
-                <input type="checkbox" id="-statistics" value="-statistics" onclick="deselect_sibling(this, '+statistics')">
-            </div>
-            <div class="t">
-                <label for="+statistics">+statistics</label>
-                <input type="checkbox" id="+statistics" value="+statistics" onclick="deselect_sibling(this, '-statistics')">
-            </div>
-        </div>
-        <div class="t"><label for="-version">Program Info</label><input type="checkbox" id="-version" value="-version -size +date"></div>
-        <div class="t"><label for="-histogram">-histogram</label><input type="checkbox" id="-histogram" value="-histogram"></div>
-        <div class="t"><label for="-cumulative">-cumulative</label><input type="checkbox" id="-cumulative" value="-cumulative"></div>
-        <div class="t"><label for="-rcumulative">-rcumulative</label><input type="checkbox" id="-rcumulative" value="-rcumulative"></div>
-        <div class="t"><label for="-table">-table</label><input type="checkbox" id="-table" value="-table"></div>
-        <div class="t"><label for="-probability">-probability</label><input type="checkbox" id="-probability" value="-probability"></div>
-        <div class="t"><label for="-percent">-percent</label><input type="checkbox" id="-percent" value="-percent"></div>
-        </div>
-        <div class="textboxes">
-        <label for="options">Options</label><input type="text" name="options" id="options">
-        <label for="expression">Expression</label><textarea name="expression" id="expression"></textarea>
-        <label for="number">Number</label><input type="text" name="number" id="number">
-        </div>
-        <div class="buttons">
-        <input type="button" value="Calculate" onclick="submit_calculation()">
-        <input type="button" value="Clear Output" onclick="clear_output()">
-        </div>
-        <div class="output">
-            <pre id="stdout">Program output appears here</pre>
-            <hr>
-            <pre id="stderr">Errors appear here</pre>
-            <hr>
-            <pre id="command">Command file appears here</pre>
-        </div>
-    </form>
+      Layout is
+
+      -exact/-new     -statistics/+statistics     -version
+      -histogram      -cumulative                 -rcumulative
+      -table          -probability                -percent
+
+      collapsing to a single column on narrow devices.
+    -->
+    
+    <div class="grid sm:grid-cols-3 gap-2 mb-8" id="checkboxes">
+      <div class="grid items-center">
+        <label class="flex items-baseline" for="-exact"><input class="mr-2" type="checkbox" id="-exact" value="-exact" onclick="deselect_sibling(this, '-new')">-exact</label>
+        <label class="flex items-baseline" for="-new"><input class="mr-2" type="checkbox" id="-new" value="-new" onclick="deselect_sibling(this, '-exact')">-new</label>
+      </div>
+      <div class="grid items-center">
+        <label class="flex items-baseline" for="-statistics"><input class="mr-2" type="checkbox" id="-statistics" value="-statistics" onclick="deselect_sibling(this, '+statistics')">-statistics</label>
+        <label class="flex items-baseline" for="+statistics"><input class="mr-2" type="checkbox" id="+statistics" value="+statistics" onclick="deselect_sibling(this, '-statistics')">+statistics</label>
+      </div>
+      <div class="grid items-center">
+        <label class="flex items-baseline" for="-version"><input class="mr-2" type="checkbox" id="-version" value="-version -size +date">Program Info</label>
+      </div>
+      <div class="grid items-center">
+        <label class="flex items-baseline" for="-histogram"><input class="mr-2" type="checkbox" id="-histogram" value="-histogram">-histogram</label>
+      </div>
+      <div class="grid items-center">
+        <label class="flex items-baseline" for="-cumulative"><input class="mr-2" type="checkbox" id="-cumulative" value="-cumulative">-cumulative</label>
+      </div>
+      <div class="grid items-center">
+        <label class="flex items-baseline" for="-rcumulative"><input class="mr-2" type="checkbox" id="-rcumulative" value="-rcumulative">-rcumulative</label>
+      </div>
+      <div class="grid items-center">
+        <label class="flex items-baseline" for="-table"><input class="mr-2" type="checkbox" id="-table" value="-table">-table</label>
+      </div>
+      <div class="grid items-center">
+        <label class="flex items-baseline" for="-probability"><input class="mr-2" type="checkbox" id="-probability" value="-probability">-probability</label>
+      </div>
+      <div class="grid items-center">
+        <label class="flex items-baseline" for="-percent"><input class="mr-2" type="checkbox" id="-percent" value="-percent">-percent</label>
+      </div>
     </div>
+
+    <!--
+      Input box area
+      ==============
+
+      Options
+      Expression
+      Number
+    
+    -->
+    <div class="grid mb-8">
+    <label for="options">Options</label><input type="text" name="options" id="options">
+    <label for="expression">Expression</label><textarea name="expression" id="expression"></textarea>
+    <label for="number">Number</label><input type="text" name="number" id="number">
+    </div>
+
+    <!--
+      Buttons
+      =======
+
+      Submit
+    -->
+    <div class="mb-8 text-slate-200">
+      <button class="rounded-lg p-2 bg-zinc-400" onclick="submit_calculation()">Calculate</button>
+      <button class="rounded-lg p-2 bg-zinc-400" onclick="clear_output()">Clear Output</button>
+    </div>
+    <!--
+      Output Area
+      ===========
+      
+      Output
+    -->
+    <div class="grid mb-8">
+      <pre id="stdout">Program output appears here</pre>
+      <hr>
+      <pre id="stderr">Errors appear here</pre>
+      <hr>
+      <pre id="command">Command file appears here</pre>
+    </div>
+  </div>
 </body>
+
 </html>

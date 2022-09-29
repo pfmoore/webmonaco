@@ -25,11 +25,6 @@ def index():
         return f.read()
 
 
-@app.route("/experimental")
-def experimental():
-    with app.open_resource("new-index.html") as f:
-        return f.read()
-
 @app.route("/run", methods=["GET", "POST"])
 def run():
     if request.method == "GET":
