@@ -36,6 +36,7 @@
         const div_err = document.getElementById('stderr');
         div_err.textContent = myJson.stderr;
         document.getElementById('command').textContent = myJson.command;
+        document.getElementById('stderr').className = (myJson.returncode != 0) ? "text-red-600" : "";
     }
 
     function deselect_sibling(me, sibling) {
@@ -46,7 +47,8 @@
 
     function clear_output() {
         document.getElementById('stdout').textContent = "Program output appears here";
-        document.getElementById('stderr').textContent = "Errors appear here";
+        document.getElementById('stderr').textContent = "Errors and warnings appear here";
+        document.getElementById('stderr').className = "";
         document.getElementById('command').textContent = "Command file appears here";
     }
   </script>
@@ -81,7 +83,7 @@
         <label class="flex items-baseline" for="+statistics"><input class="mr-2" type="checkbox" id="+statistics" value="+statistics" onclick="deselect_sibling(this, '-statistics')">+statistics</label>
       </div>
       <div class="grid items-center">
-        <label class="flex items-baseline" for="-version"><input class="mr-2" type="checkbox" id="-version" value="-version -size +date">Program Info</label>
+        <label class="flex items-baseline" for="-table"><input class="mr-2" type="checkbox" id="-table" value="-table">-table</label>
       </div>
       <div class="grid items-center">
         <label class="flex items-baseline" for="-histogram"><input class="mr-2" type="checkbox" id="-histogram" value="-histogram">-histogram</label>
@@ -93,13 +95,13 @@
         <label class="flex items-baseline" for="-rcumulative"><input class="mr-2" type="checkbox" id="-rcumulative" value="-rcumulative">-rcumulative</label>
       </div>
       <div class="grid items-center">
-        <label class="flex items-baseline" for="-table"><input class="mr-2" type="checkbox" id="-table" value="-table">-table</label>
-      </div>
-      <div class="grid items-center">
         <label class="flex items-baseline" for="-probability"><input class="mr-2" type="checkbox" id="-probability" value="-probability">-probability</label>
       </div>
       <div class="grid items-center">
         <label class="flex items-baseline" for="-percent"><input class="mr-2" type="checkbox" id="-percent" value="-percent">-percent</label>
+      </div>
+      <div class="grid items-center">
+        <label class="flex items-baseline" for="-version"><input class="mr-2" type="checkbox" id="-version" value="-version -size +date">Program Info</label>
       </div>
     </div>
 
@@ -137,7 +139,7 @@
     <div class="grid mb-8">
       <pre id="stdout">Program output appears here</pre>
       <hr>
-      <pre id="stderr">Errors appear here</pre>
+      <pre id="stderr">Errors and warnings appear here</pre>
       <hr>
       <pre id="command">Command file appears here</pre>
     </div>

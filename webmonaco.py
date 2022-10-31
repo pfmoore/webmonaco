@@ -61,7 +61,7 @@ def run():
         cmdfile = Path(d) / "monaco.data"
         with cmdfile.open("w") as f:
             # Suppress "press enter" pause, and disallow writing files
-            print("-nofiles -noread -noprompt -stderr", file=f)
+            print("-nofiles -noread -noprompt +stderr", file=f)
             print(file_content, file=f)
         command = [str(monaco_bin), cmdfile.name]
         proc = subprocess.run(
