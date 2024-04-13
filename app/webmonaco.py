@@ -1,12 +1,9 @@
-import os
-import stat
 import subprocess
 import sys
 import tempfile
-from importlib.resources import read_text
 from pathlib import Path
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, request
 from flask_cors import CORS
 
 monaco_bin = (Path(__file__).parent / f"bin/{sys.platform}/monaco").absolute()
@@ -72,6 +69,6 @@ def run():
         }
 
 
-#if __name__ == "__main__":
-#    port = int(os.getenv("PORT", "8080"))
-#    app.run(threaded=True, port=port)
+# if __name__ == "__main__":
+#     port = int(os.getenv("PORT", "8080"))
+#     app.run(threaded=True, port=port)
