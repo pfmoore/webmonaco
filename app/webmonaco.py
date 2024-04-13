@@ -10,10 +10,6 @@ from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 
 monaco_bin = (Path(__file__).parent / f"bin/{sys.platform}/monaco").absolute()
-if sys.platform == "linux":
-    st = os.stat(monaco_bin)
-    os.chmod(monaco_bin, st.st_mode | stat.S_IEXEC)
-
 
 app = Flask(__name__)
 CORS(app)
