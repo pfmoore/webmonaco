@@ -6,6 +6,7 @@ from urllib.request import Request, urlopen
 from zipfile import ZipFile
 
 API_URL = "https://api.github.com/repos/pfmoore/builder-monaco/releases"
+TARGET = Path("app/bin")
 
 if len(sys.argv) < 2:
     raise SystemExit("Must provide a tag name")
@@ -26,6 +27,6 @@ for r in data:
         z = ZipFile(content)
         print(z.namelist())
         if name.startswith("monaco-windows"):
-            Path("bin/win32/monaco.exe").write_bytes(z.read("monaco.exe"))
+            (TARGET / "win32/monaco.exe").write_bytes(z.read("monaco.exe"))
         if name.startswith("monaco-linux"):
-            Path("bin/linux/monaco").write_bytes(z.read("monaco"))
+            (TARGET / "linux/monaco").write_bytes(z.read("monaco"))
