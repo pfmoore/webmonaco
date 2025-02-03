@@ -1,0 +1,148 @@
+<HTML>
+
+<HEAD>
+
+<TITLE>Monaco</TITLE>
+
+<META NAME="description" CONTENT="Monaco">
+
+<META NAME="keywords" CONTENT="Monaco probability analysis simulation Monte Carlo">
+
+</HEAD>
+
+<BODY>
+
+<H1> <CENTER>Monaco</CENTER></H1>
+
+This web page allows you to run the program <b>Monaco</b> that can be used to
+answer a wide range of probability problems, most commonly those arising in dice
+and card games.
+
+<P>
+
+Monaco is a program that you can run locally. However, that takes some setting
+up. This web page allows you to run the program remotely - even on a device
+such as a smartphone that you cannot run Monaco on directly. Most of the
+features of Monaco are available, the main exception being that run time is
+limited - but you can still do a lot in the time allowed.
+
+<H3>An Example</CENTER></H2>
+
+We start with an example that describes how to use the web page. For this
+example we investigate the distribution of an ability score playing the game
+<i>Dungeons & Dragons</i>. We start with the usual way to produce such a score:
+roll four dice, pick the largest three and add them up. The most straightforward
+way to do this in Monaco is using the <i>expression</i>
+<span style="font-family: courier">sum(tail3(sorted4d6))</span>.
+For now we just assume that this expression works - where to find out how to
+write expressions, including that one, is described below.
+
+<P>
+
+To use that expression, we type it - or cut and paste it - into the box labelled
+<span style="font-family: helvetica">Expression</span>.
+We also select the buttons labelled <span style="font-family: helvetica">-exact</span>
+and <span style="font-family: helvetica">-histogram</span> at the top of the page,
+and then press the button <span style="font-family: helvetica">Calculate</span>
+below the three boxes.
+
+<P>
+
+This gives you 16 lines of output below that button - ignore the final output
+lines below the horizontal line, most users won't need those. The first line of
+that output is:
+
+<P>
+
+<span style="font-family: courier">&nbsp3&nbsp-&nbsp&nbsp&nbsp1~&nbsp0.000771605&nbsp=&nbsp1/1296</span>
+
+<P>
+
+This line means that there is a probability of 1/1296, or about 0.000771605, of
+a score of 3. You might prefer to see that as a percentage. If so, also select
+the button labelled <span style="font-family: helvetica">-percent</span> before
+pressing <span style="font-family: helvetica">Calculate</span>. In this case the
+first line is:
+
+<P>
+
+<span style="font-family: courier">&nbsp3&nbsp-&nbsp&nbsp&nbsp1~&nbsp0.0771605%&nbsp=&nbsp1/1296</span>
+
+<H3>Options</CENTER></H2>
+
+The three buttons labelled <span style="font-family: helvetica">-exact</span>,
+<span style="font-family: helvetica">-histogram</span> and
+<span style="font-family: helvetica">-percent</span> that have been used
+in the example above provide <i>options</i> to the program. There is also a box
+labelled <span style="font-family: helvetica">Options</span>; selecting the
+button <span style="font-family: helvetica">-exact</span> is exactly the same as
+typing <span style="font-family: courier">-exact</span> into that box. You can
+do one or the other, but trying to do both will result in the run failing.
+
+<P>
+
+There are many more options than those provided by buttons, which are just the
+most commonly used options. You can experiment with the other buttons for the
+example above - except that
+<span style="font-family: helvetica">-probability</span> is not appropriate, and
+at this point do not try using <span style="font-family: helvetica">-new</span>
+and always use <span style="font-family: helvetica">-exact</span>. The button
+<span style="font-family: helvetica">Program Info</span> actually selects three
+options. Some buttons are exclusive - for example selecting
+<span style="font-family: helvetica">+statistics</span> cancels
+<span style="font-family: helvetica">-statistics</span>, and vice versa.
+
+<H3>Tutorial</CENTER></H2>
+
+There is a <a href="http://www.mnemosyne.uk/monaco/Monaco%20Tutorial.pdf">tutorial</a>
+for the program, but to use it you need to understand the difference between
+how you would run a local copy of the program, and how you use this web page.
+
+<P>
+
+Monaco is a command line program. You run it by putting first the options, then
+the expression - and sometimes a third kind of parameter that the box
+<span style="font-family: helvetica">Numbers</span> is for - on a command line.
+Thus the first example above corresponds to the command line:
+
+<P>
+
+<span style="font-family: courier">monaco -exact -histogram sum(tail3(sorted4d6))</span>
+
+<P>
+
+where <span style="font-family: courier">monaco</span> is a placeholder for what
+you actually need to type, which depends on your system. The tutorial describes
+use of the program only in this way. To use examples in the tutorial you must
+put the options into the <span style="font-family: helvetica">Options</span> box
+- or use buttons where available - and put the expression into the
+<span style="font-family: helvetica">Expression</span> box. Until you reach the
+material on approximate runs near the end of the tutorial, leave the
+<span style="font-family: helvetica">Numbers</span> box empty. (When you reach
+that point, do not select <span style="font-family: helvetica">-exact</span>,
+put the number of evaluations in the
+<span style="font-family: helvetica">Numbers</span> box, and you can experiment
+with the option <span style="font-family: courier">-new</span>.)
+
+<P>
+
+The most important thing in the tutorial that is not either described above or
+can be found by experimentation with the buttons, is how to write useful
+expressions. However, the tutorial also describes some additional options, in
+particular how to use the option
+<span style="font-family: courier">-probability</span>.
+
+<P>
+
+The tutorial is one of the immediately available documents for the program,
+others include two further tutorials. For all of these see
+<a href="http://www.mnemosyne.uk/monaco/">here</a>. If you receive the
+program - contact the author as described there - there is also extensive full
+documentation - most of which most users will not need, the tutorials alone
+will probably suffice.
+
+<P>
+
+</BODY>
+
+</HTML>

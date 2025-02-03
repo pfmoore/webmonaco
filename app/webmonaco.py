@@ -24,6 +24,11 @@ def favicon():
         return f.read()
 
 
+@app.route("/help")
+def help():
+    with app.open_resource("help.html") as f:
+        return f.read()
+
 @app.route("/run", methods=["GET", "POST"])
 def run():
     if request.method == "GET":
