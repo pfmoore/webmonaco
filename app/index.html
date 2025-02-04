@@ -31,12 +31,32 @@
             }
         });
         const myJson = await response.json(); //extract JSON from the http response
+        console.log(myJson)
         const div_out = document.getElementById('stdout');
-        div_out.textContent = myJson.stdout;
+        div_out.textContent = myJson.out.content;
         const div_err = document.getElementById('stderr');
-        div_err.textContent = myJson.stderr;
+        div_err.textContent = myJson.err.content;
         document.getElementById('command').textContent = myJson.command;
-        document.getElementById('stderr').className = (myJson.returncode != 0) ? "text-red-600" : "";
+        document.getElementById('stderr').className = (myJson.rc != 0) ? "text-red-600" : "";
+        var notifications = [];
+        if (myJson.status == "Timeout") {
+          notifications.push("Monaco ran for too long and was terminated");
+        }
+        if (myJson.out.truncated) {
+          notifications.push("Monaco output was too long and was truncated");
+        }
+        if (myJson.err.truncated) {
+          notifications.push("Monaco produced too many errors - the output was truncated");
+        }
+        if (notifications.length > 0) {
+          var n = document.getElementById('notifications');
+          n.textContent = notifications.join("<br>");
+          n.className = "text-red-600"
+
+        }
+        else {
+          document.getElementById('notifications').className = "hidden";
+        }
     }
 
     function deselect_sibling(me, sibling) {
@@ -137,6 +157,8 @@
       
       Output
     -->
+    <div id="notifications" class="hidden">
+    </div>
     <div class="grid mb-8">
       <pre id="stdout">Program output appears here</pre>
       <hr>
