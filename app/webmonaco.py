@@ -123,9 +123,10 @@ def run():
             print("-nofiles -noread -noprompt +stderr", file=f)
             print(file_content, file=f)
         command = [str(monaco_bin), cmdfile.name]
-        result = run_and_capture_output(command, d)
+        result = asdict(run_and_capture_output(command, d))
+        result["command"] = command
 
-        return asdict(result)
+        return result
 
 # if __name__ == "__main__":
 #     port = int(os.getenv("PORT", "8080"))
