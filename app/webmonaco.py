@@ -124,7 +124,7 @@ def run():
             print(file_content, file=f)
         command = [str(monaco_bin), cmdfile.name]
         result = asdict(run_and_capture_output(command, d))
-        result["command"] = command
+        result["command"] = cmdfile.read_text()
 
         return result
 
