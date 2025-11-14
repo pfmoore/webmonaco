@@ -21,36 +21,46 @@ and card games.
 <P>
 
 Monaco is a program that you can run locally. However, that takes some setting
-up. This web page allows you to run the program remotely - even on a device
-such as a smartphone that you cannot run Monaco on directly. Most of the
-features of Monaco are available, the main exception being that run time is
-limited - but you can still do a lot in the time allowed.
+up. This web page allows you to run the program remotely in a broswer, even
+using a device such as a smartphone that you cannot run Monaco on directly. Most
+of the features of Monaco are available, the main exception being that run time
+is limited - but you can still do a lot in the time allowed.
 
-<H3>An Example</CENTER></H2>
+<H2 id="example">An Example</CENTER></H2>
 
-We start with an example that describes how to use the web page. For this
-example we investigate the distribution of an ability score playing the game
-<i>Dungeons & Dragons</i>. We start with the usual way to produce such a score:
-roll four dice, pick the largest three and add them up. The most straightforward
-way to do this in Monaco is using the <i>expression</i>
+We start with a simple example that illustrates how to use this web page. For
+this example we investigate the distribution of a characteristic score playing
+the game <i>Dungeons & Dragons</i> (or <i>D&D</i>) [TSR, 1974].
+
+<P>
+
+We start with the current usual way to produce such a score: roll four dice,
+pick the largest three and add them up. A straightforward way to do this in
+Monaco is using the <i>expression</i>
 <span style="font-family: courier">sum(tail3(sorted4d6))</span>.
-For now we just assume that this expression works - where to find out how to
-write expressions, including that one, is described below.
+For now we just assume that this expression works - more material about
+expressions is presented in the section <a href="#expressions">Expressions</a>
+below, including an explanation of that expression in the section
+<a href="#dungeons">The <i>D&D</i> Example</a> below.
 
 <P>
 
-To use that expression, we type it - or cut and paste it - into the box labelled
-<span style="font-family: helvetica">Expression</span>.
-We also select the buttons labelled <span style="font-family: helvetica">-exact</span>
-and <span style="font-family: helvetica">-histogram</span> at the top of the page,
-and then press the button <span style="font-family: helvetica">Calculate</span>
-below the three boxes.
+To use that expression, type it - or cut and paste it - into the input box
+labelled <span style="font-family: helvetica">Expression</span>. leaving the
+other two input boxes empty, select the
+<span style="font-family: helvetica">-exact</span> and
+<span style="font-family: helvetica">-histogram</span> checkboxes at the top of
+the page, and press the button
+<span style="font-family: helvetica">Calculate</span> that is below the three
+input boxes.
 
 <P>
 
-This gives you 16 lines of output below that button - ignore the final output
-lines below the horizontal line, most users won't need those. The first line of
-that output is:
+Because, if entered correctly, that run will be successful, and the
+<span style="font-family: helvetica">Output</span> tab at the bottom of the
+page will be selected, showing 16 lines of output in the
+<span style="font-family: helvetica>"Output</span> panel below it. The first
+line of that output is:
 
 <P>
 
@@ -60,88 +70,530 @@ that output is:
 
 This line means that there is a probability of 1/1296, or about 0.000771605, of
 a score of 3. You might prefer to see that as a percentage. If so, also select
-the button labelled <span style="font-family: helvetica">-percent</span> before
-pressing <span style="font-family: helvetica">Calculate</span>. In this case the
-first line is:
+the <span style="font-family: helvetica">-percent</span> checkbox before
+pressing the <span style="font-family: helvetica">Calculate</span>
+button. In this case the first line is:
 
 <P>
 
 <span style="font-family: courier">&nbsp3&nbsp-&nbsp&nbsp&nbsp1~&nbsp0.0771605%&nbsp=&nbsp1/1296</span>
 
-<H3>Options</CENTER></H2>
+<H2>Options</CENTER></H2>
 
-The three buttons labelled <span style="font-family: helvetica">-exact</span>,
+The <span style="font-family: helvetica">-exact</span>,
 <span style="font-family: helvetica">-histogram</span> and
-<span style="font-family: helvetica">-percent</span> that have been used
-in the example above provide <i>options</i> to the program. There is also a box
-labelled <span style="font-family: helvetica">Options</span>; selecting the
-button <span style="font-family: helvetica">-exact</span> is exactly the same as
-typing <span style="font-family: courier">-exact</span> into that box. You can
-do one or the other, but trying to do both will result in the run failing.
+<span style="font-family: helvetica">-percent</span> checkboxes used in the
+example above provide <i>options</i> to the program. There is also an
+<span style="font-family: helvetica">Options</span> input box; selecting the
+<span style="font-family: helvetica">-exact</span> checkbox is exactly the same
+as entering <span style="font-family: courier">-exact</span> in that input box.
+You can do one or the other, but trying to do both will result in the run
+failing. The <span style="font-family: helvetica">Options</span> input box can
+contain any number of space-separated options on one line.
 
 <P>
 
-There are many more options than those provided by buttons, which are just the
-most commonly used options. You can experiment with the other buttons for the
-example above - except that
-<span style="font-family: helvetica">-probability</span> is not appropriate, and
-at this point do not try using <span style="font-family: helvetica">-new</span>
-and always use <span style="font-family: helvetica">-exact</span>. The button
-<span style="font-family: helvetica">Program Info</span> actually selects three
-options. Some buttons are exclusive - for example selecting
-<span style="font-family: helvetica">+statistics</span> cancels
-<span style="font-family: helvetica">-statistics</span>, and vice versa.
-
-<H3>Tutorial</CENTER></H2>
-
-There is a <a href="http://www.mnemosyne.uk/monaco/Monaco%20Tutorial.pdf">tutorial</a>
-for the program, but to use it you need to understand the difference between
-how you would run a local copy of the program, and how you use this web page.
+There are many more options than those provided by the checkboxes. However,
+these are the most commonly used options, and suffice for a wide range of
+problems. You can experiment with the other checkboxes for the example above,
+except that <span style="font-family: helvetica">-probability</span> is not
+appropriate to this example, and at this point do not try to use
+<span style="font-family: helvetica">-new</span> and always use
+<span style="font-family: helvetica">-exact</span>.
 
 <P>
 
-Monaco is a command line program. You run it by putting first the options, then
-the expression - and sometimes a third kind of parameter that the box
-<span style="font-family: helvetica">Number</span> is for - on a command line.
-Thus the first example above corresponds to the command line:
+The checkbox <span style="font-family: helvetica">Program Info</span> selects
+three options that provide information about the program and the run, including
+the program version and copyright information.
 
 <P>
 
-<span style="font-family: courier">monaco -exact -histogram sum(tail3(sorted4d6))</span>
+Grouped checkboxes are exclusive - selecting either
+<span style="font-family: helvetica">-exact</span> or
+<span style="font-family: helvetica">-new</span> cancels the other if previously
+selected, and similarly for
+<span style="font-family: helvetica">-statistics</span> and
+<span style="font-family: helvetica">+statistics</span>.
+
+<H2>Buttons, Tabs and Panels</CENTER></H2>
+
+There are four buttons arranged horizontally below the three input boxes, and
+below those there are three tabs, each of which displays a corresponding output
+panel below the tabs.
+
+<P>
+
+As described in the <a href="#example">example</a> above, the
+<span style="font-family: helvetica">Calculate</span> button is used to run the
+program, which when successful selects the
+<span style="font-family: helvetica">Output</span> tab and displays the
+<span style="font-family: helvetica">Output</span> panel.
+
+<P>
+
+If you make a mistake, for example not providing suitable options or entering
+an invalid expression, then instead the
+<span style="font-family: helvetica">Errors</span> tab is selected and the
+<span style="font-family: helvetica">Errors</span> panel is displayed containing
+an error message. Sometimes there can be normal output as well as an error
+message, and the <span style="font-family: helvetica">Output</span> tab can be
+selected to see it.
+
+<P>
+
+Most users can ignore the third tab
+<span style="font-family: helvetica">Command</span> and its panel. (It contains
+the command line assembled by the web page to make the run. It includes some
+initial options that are needed in this case, but are not needed by most users.)
+
+<P>
+
+As well as the <span style="font-family: helvetica">Calculate</span> button,
+there are three other buttons on its row. The latter two buttons have useful
+actions available by right clicking on the button.
+
+<P>
+
+The <span style="font-family: helvetica">Clear</span> button removes all output
+from the three output panels. It is not necessary, but using it between runs can
+make it clearer when a run has finished.
+
+<P>
+
+The <span style="font-family: helvetica">Calculation Link</span> button allows
+the user to create a link to a version of the web page where the checkboxes and
+input boxes are already filled in as they were when this button was used.
+Pressing the button opens that web page, from which the link can be copied.
+Alternatively, right clicking offers useful actions including Copy Link. This is
+a permanent link, it can be used after the original filled in page has gone.
+Given such a link, all the user needs to do is press the
+<span style="font-family: helvetica">Calculate</span> button to get the same
+results. The linked page can also be edited if a similar but different run is
+required.
+
+<P>
+
+The <span style="font-family: helvetica">Help</span> button opens this help
+information in a new tab in your browser, or as otherwise selected by right
+clicking on this button.
+
+<H2 id="next">Next Steps</CENTER></H2>
+
+You can now proceed to either read the following section to learn more about
+expressions, which together with use of the
+<a href="#reference">reference material</a> described below might suffice to
+use the program, or you can read the <a href="#tutorials">tutorial<a>
+referenced below - or you can do some or all of both.
+
+<P>
+
+However, to use any other information than this page, you need to understand
+the difference between using the program from this web page and the command line
+use of the program described in all other documents.
+
+<P>
+
+Monaco itself is a command line program. You run it by putting first the
+options, then the expression - and sometimes a third kind of parameter that the
+input box <span style="font-family: helvetica">Number</span> is for - on a
+command line. Thus the <i>D&D</i> example above corresponds to using the command
+line:
+
+<P>
+
+<span style="font-family: courier">monaco&nbsp-exact&nbsp-histogram&nbspsum(tail3(sorted4d6))</span>
 
 <P>
 
 where <span style="font-family: courier">monaco</span> is a placeholder for what
-you actually need to type, which depends on your system. The tutorial describes
-use of the program only in this way. To use examples in the tutorial you must
-put the options into the <span style="font-family: helvetica">Options</span> box
-- or use buttons where available - and put the expression into the
-<span style="font-family: helvetica">Expression</span> box. Until you reach the
-material on approximate runs near the end of the tutorial, leave the
-<span style="font-family: helvetica">Number</span> box empty. (When you reach
-that point, do not select <span style="font-family: helvetica">-exact</span>,
-put the number of evaluations in the
-<span style="font-family: helvetica">Number</span> box, and you can experiment
-with the option <span style="font-family: courier">-new</span>.)
+you actually need to type, which depends on your system. To use examples in the
+tutorial and other documentation, put their options into the
+<span style="font-family: helvetica">Options</span> input box - or use
+checkboxes where available - and put their main expression into the
+<span style="font-family: helvetica">Expression</span> input box. If using
+approximate mode, see section <a href="#approximate">Approximate Mode</a> below,
+put their number of evaluations into the
+<span style="font-family: courier">Number</span> input box.
+
+<H2 id="expressions">Expressions</CENTER></H2>
+
+<H3>The Structure of the Expression</H3>
+
+The expression in that input box is the <i>main expression</i>; other
+expressions are possible in some options, but are not described here, where the
+main expression is usually just referred to as the expression.
 
 <P>
 
-The most important thing in the tutorial that is not either described above or
-can be found by experimentation with the buttons, is how to write useful
-expressions. However, the tutorial also describes some additional options, in
-particular how to use the option
-<span style="font-family: courier">-probability</span>.
+The expression is constructed from <i>terms</i>, which are anything that can be
+evaluated. Each term has a <i>type</i>: integer, list (of integers), real
+number, or string, but only the first two types are used here. Terms can be
+combined using <i>operators</i> and <i>functions</i>. Terms can be sequenced
+separated by semicolons; the value of such a sequence is the value of its last
+term. An expression has a type of its outermost last term, for the main
+expression this is the type integer.
+
+<H3>Operators</H3>
+
+Operators combine terms of the same type, producing a term of the same type. For
+example, the expression <span style="font-family: courier">3d6>=2d10</span>
+contains the terms <span style="font-family: courier">3d6</span> (the sum of
+three six-sided dice) and <span style="font-family: courier">2d10</span> (the
+sum of two ten-sided dice) combined using the operator
+<span style="font-family: courier">>=</span>. The logical result of the
+comparison is of type integer, and logical values are handled as in the C
+programming language - zero is false, anything else is true, but a true result
+is always one.
+
+<P>
+
+The available operators are modelled after those in standard C/C++, with some
+changes (assignment uses <span style="font-family: courier">:=</span> not
+<span style="font-family: courier">=</span> and logical operators are not
+doubled) and some additions (including
+<span style="font-family: courier">~</span>
+<span style="font-family: courier">@</span>
+<span style="font-family: courier">#</span>
+<span style="font-family: courier">?&lt</span>
+<span style="font-family: courier">?&gt</span> and
+<span style="font-family: courier">??</span>).
+
+<P>
+
+The question to be answered here is how often 3d6 is greater than or equal to
+2d10. We also replace <span style="font-family: helvetica">-histogram</span> by
+<span style="font-family: helvetica">-probability</span> and
+<span style="font-family: helvetica">-statistics</span>, and the exact output
+is:
+
+<P>
+
+<span style="font-family: courier">Number&nbspof&nbspresults&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp=&nbsp21600</span><br>
+<span style="font-family: courier">Number&nbspof&nbspfalse&nbspresults&nbsp&nbsp&nbsp&nbsp=&nbsp10800</span><br>
+<span style="font-family: courier">Number&nbspof&nbsptrue&nbspresults&nbsp&nbsp&nbsp&nbsp&nbsp=&nbsp10800</span><br>
+<span style="font-family: courier">Probability&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp=&nbsp0.5&nbsp=&nbsp1/2</span><br>
+
+<H3>Functions</H3>
+
+A function has a name followed by comma separated arguments in parentheses ().
+If the function has no arguments the parentheses can be omitted. Otherwise, each
+argument has a type. Argument types can be different from each other and from
+that of the function, i.e. the type of its value. When an expression is parsed -
+converted to an internally used form - it is always known which type of term is
+expected. There is an exception to this rule, the
+<a href="#assignment">assignment of a variable</a>, as described below.
+
+<P>
+
+For example, <span style="font-family: courier">product(3d6)</span> is a valid
+term, as <span style="font-family: courier">product</span> is a function with a
+list argument and an integer value. This
+<span style="font-family: courier">3d6</span> is not the sum of three dice but
+is a list of three dice values. Monaco can tell the difference between the two
+uses of 3d6 because it always knows which type of term is expected.
+
+<P>
+
+Here we assume that we are interested in the average value of that product, and
+we use the option <span style="font-family: courier">-statistics</span> as well
+as <span style="font-family: courier">-exact</span> to produce the output:
+
+<P>
+
+<span style="font-family: courier">Number&nbspof&nbspresults&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp=&nbsp216</span><br>
+<span style="font-family: courier">Mean&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp=&nbsp42.875&nbsp=&nbsp343/8</span><br>
+<span style="font-family: courier">Standard&nbspdeviation&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp=&nbsp40.6262</span><br>
+<span style="font-family: courier">Minimum&nbspresult&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp=&nbsp1</span><br>
+<span style="font-family: courier">Maximum&nbspresult&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp=&nbsp216</span><br>
+
+<P>
+
+Randomness can also be introduced by functions. For example, the function
+<span style="font-family: courier">shuffle</span> creates a random reordering of
+a list, thus <span style="font-family: courier">shuffle{2,3,5,7}</span> has 24
+possible values. This term uses that a single braced list argument used as
+<span style="font-family: courier">({</span>...<span style="font-family: courier">})</span>
+can be replaced by <span style="font-family: courier">{</span>...
+<span style="font-family: courier">}</span> for any ...
+
+<H3>Lists</H3>
+
+Lists are of integers. All lists have a fixed length; for example, the list
+<span style="font-family: courier">3d6</span> has length 3.
+
+<P>
+
+Three other examples of lists with length 3 are
+<span style="font-family: courier">{d6,2d6+1,3d6+3}</span>, which has 216
+possible values, <span style="font-family: courier">4[3]</span>, which is
+equivalent to <span style="font-family: courier">{4,4,4}</span>, and
+<span style="font-family: courier">sequence3</span>, which is equivalent to
+<span style="font-family: courier">{0,1,2}</span>.
+
+<P>
+
+List lengths can be omitted when they can be deduced; for example,
+<span style="font-family: courier">sequence3+4</span> can be used instead of
+<span style="font-family: courier">sequence3+4[3]</span>.
+
+<H3 id="assignment">Variables and Assignment</H3>
+
+There are ten integer variables called
+<span style="font-family: courier">r0</span> to
+<span style="font-family: courier">r9</span> and ten list variables called
+<span style="font-family: courier">v0</span> to
+<span style="font-family: courier">v9</span> that can be used in an expression.
+
+<P>
+
+We assign to a variable using, for example,
+<span style="font-family: courier">v0:=3d6</span>, or using a modifying
+assignment, for example <span style="font-family: courier">v0+=3d6</span>. List
+variables have a constant length, so, for example, once the length of
+<span style="font-family: courier">v0</span> is set it cannot be changed.
+Either of those assignments sets the length of
+<span style="font-family: courier">v0</span> to 3 if not already set.
+
+<P>
+
+Assignments are terms; the value of an assignment term is the new value of the
+assigned to variable. Assignments can be used in a semicolon separated term
+sequence, even if a different term type is expected. However, the last term in
+such a sequence should have the expected type. For example,
+<span style="font-family: courier">v0:=3d6;sum(v0*v0)</span> is a valid integer
+term. (Like other list operators, * works element by element, and
+<span style="font-family: courier">sum</span> is similar to
+<span style="font-family: courier">product</span>.)
+
+<P>
+
+There are also some derived variables. For example,
+<span style="font-family: courier">e01</span> is element
+<span style="font-family: courier">r1</span> of the list
+<span style="font-family: courier">v0</span>. It can be used to extract
+information from <span style="font-family: courier">v0</span>, or to set
+individual elements of <span style="font-family: courier">v0</span> as
+<span style="font-family: courier">r1</span> is varied.
+
+<P>
+
+Before each evaluation of the expression, integer variables are all set to zero
+and list variables are all set to a list with the appropriate number of all zero
+elements.
+
+<H3>Constants</H3>
+
+There are also ten integer constants
+<span style="font-family: courier">c0</span> to
+<span style="font-family: courier">c9</span> and ten list constants
+<span style="font-family: courier">u0</span> to
+<span style="font-family: courier">u9</span>. These can only be set once, at the
+start of the expression and followed by one or more semicolon separated terms.
+Also, the constants <span style="font-family: courier">s0</span> to
+<span style="font-family: courier">s9</span> are the lengths of the variable
+lists <span style="font-family: courier">v0</span> to
+<span style="font-family: courier">v9</span>; these can be set to define the
+list length. The lengths of <span style="font-family: courier">u0</span> to
+<span style="font-family: courier">u9</span> are
+<span style="font-family: courier">k0</span> to
+<span style="font-family: courier">k9</span>, but these cannot be set. In
+addition, for example, the variable
+<span style="font-family: courier">i01</span> is element
+<span style="font-family: courier">r1</span> of
+<span style="font-family: courier">u0</span>; this cannot be modified.
+
+<H3>Branching and Loops</H3>
+
+Branches and loops are implemented within the expression, not outside it.
+
+<P>
+
+Branching can be by using operators, as in C/C++. The ternary
+<span style="font-family: courier">?:</span> operator evaluates either its
+second or third operand according to the value of its first operand (true or
+false). Also, the logical and <span style="font-family: courier">&</span> and
+inclusive or <span style="font-family: courier">|</span> operators only evaluate
+their second argument if needed.
+
+<P>
+
+One form of loop uses the <span style="font-family: courier">@</span>
+(accumulation) operator. This evaluates its first operand, and then evaluates
+its second operand that many times, summing them. For example,
+<span style="font-family: courier">3@d6</span> is the same as
+<span style="font-family: courier">3d6</span>. However, for
+<span style="font-family: courier">d6@d6</span>, the number of dice rolled is
+variable. That means that term cannot be used in exact mode. (However, that case
+can be analysed exactly using the program because the randomness is bounded. The
+best way to do that uses the <i>randomness pool</i>, but that is beyond the
+scope of this introduction to the program.)
+
+<P>
+
+Other loops use functions. There are many loop functions, both looping in
+different ways, such as a fixed or variable number of times or over the elements
+of a list, and providing cases such as summing or taking the maximum over a
+loop to simplify the expression. However, here just two loops are presented to
+show their basic principles.
+
+<P>
+
+The first example loop rolls a d6 until a 6 is rolled, accumulating the results
+without the final 6, using the term
+<span style="font-family: courier">while(r0:=d6;r0!=6,r1+=r0)</span>. The value
+of this term is the last value of its second argument. This is the required sum
+if that is the complete expression, using that
+<span style="font-family: courier">r1</span> is initialised to zero. This loop
+cannot be used in exact mode.
+
+<P>
+
+The second example loop is through the list
+<span style="font-family: courier">v0</span>, with length
+<span style="font-family: courier">s0</span>. We assume there is also a constant
+list <span style="font-family: courier">u0</span> with at least the same length.
+We replace each element of <span style="font-family: courier">v0</span> by its
+square or cube if the corresponding element of
+<span style="font-family: courier">u0</span> is true or false. As
+<span style="font-family: courier">s0</span> and
+<span style="font-family: courier">u0</span> are not initialised here, this is
+only a term, not a complete expression:
+<span style="font-family: courier">rloop1(s0,e01*=(i01?e01:e01*e01))</span>,
+which loops <span style="font-family: courier">r1</span> from 0, inclusive, to
+<span style="font-family: courier">s0</span>, exclusive. The term's value is
+also the final value of the second argument, but that is not very useful here
+(nor is the whole term).
+
+<H3>Faster Exact Results</H3>
+
+Rolling nine standard dice the number of different values rolled is
+<span style="font-family: courier">count_diff(9d6)</span>. Here that takes
+just under 5 seconds. We can greatly speed that up by instead using
+<span style="font-family: courier">count_diff(sorted9d6)</span>. The list term
+<span style="font-family: courier">sorted9d6</span> assumes that which die is
+which has no effect, and so generates just one representative of each
+significantly different set of dice, the one where they are sorted in
+non-descending order. It handles that not all sets of dice are equally likely.
+The time is reduced to about 1.5 milliseconds. Increasing 9 dice to 12 dice the
+time required for the unsorted case would be about 10 minutes, but this is not
+allowed here, while the sorted case takes about 4 milliseconds, which is faster
+by over five orders of magnitude.
+
+<P>
+
+There are more terms like <span style="font-family: courier">sorted9d6</span>
+for other cases, including drawing cards as well as rolling dice, and for other
+forms of symmetry than the "all dice are interchangeable" used here. They rely
+on the user to identify which term is appropriate, but the gains can make that
+worthwhile.
+
+<H3 id="dungeons">The <i>D&D</i> Example</H3>
+
+The <i>D&D</i> example above used the expression
+<span style="font-family: courier">sum(tail3(sorted4d6))</span>. We would build
+such an expression from the inside out. We roll four interchangeable standard
+dice, which is <span style="font-family: courier">sorted4d6</span>. We want the
+three largest dice, which since that list is sorted, as described in the
+previous section, are its last three elements, which we can extract as a list
+using the function <span style="font-family: courier">tail3</span>. Finally, we
+want the sum of those three dice using the function
+<span style="font-family: courier">sum</span>.
+
+<P>
+
+Working from the outside, as the program does, the expression is an integer,
+<span style="font-family: courier">sum</span> is an integer function with a list
+argument of any length, <span style="font-family: courier">tail3</span> is a
+list function whose result is a list with length 3, and which has a single list
+argument that is usually longer, and
+<span style="font-family: courier">sorted4d6</span> is a list with length 4.
+
+<H2 id="approximate">Approximate Mode</H2>
+
+Some problems cannot be solved, or cannot be easily solved, exactly. In such
+cases you can use approximate mode, but whenever it is possible using exact
+mode is better.
+
+<P>
+
+Approximate mode is selected by not selecting the option
+<span style="font-family: courier">-exact</span>. A number must be entered in
+the <span style="font-family: courier">Numbers</span> input box, and the
+expression is evaluated that many times, randomly - except that to produce
+different results from each run, also select the option
+<span style="font-family: courier">-new</span>.
+
+<P>
+
+As the name indicates, results in this mode are approximate, but if the number
+of evaluations is large, accurate enough for most practical purposes. As an
+example - which does not actually need approximate mode, but is convenient here
+- ten million evaluations of the expression
+<span style="font-family: courier">3d6</span>, with the option
+<span style="font-family: courier">-percent</span>, but without the option
+<span style="font-family: courier">-new</span>, produces
+<span style="font-family: courier">-histogram</span> output whose first line is:
+
+<P>
+
+<span style="font-family: courier">&nbsp3&nbsp-&nbsp&nbsp&nbsp46364&nbsp~&nbsp&nbsp0.46364%&nbsp&nbsp[0.459448%,&nbsp0.46787%]</span>
+
+<P>
+
+The values in <span style="font-family: courier">[]</span> are a 95% confidence
+interval for the probability; the true result is usually in that interval. We
+can use it to say that the probability is about 0.46% - but based on those
+results it could be about 0.47%, or (rarely) some other value.
+
+<P>
+
+This process is known as <i>Monte Carlo simulation</i>, hence the program name.
+
+<H2 id="tutorials">Tutorials</CENTER></H2>
+
+There is a
+<a href="http://www.mnemosyne.uk/monaco/Monaco%20Tutorial.pdf">tutorial</a>
+for the program, but, as described in the section
+<a href="#next">Next Steps</a> above, to use it - or any other documentation -
+you need to understand the difference between how you would run a local copy of
+the program, and how you use this web page.
 
 <P>
 
 The tutorial is one of the immediately available documents for the program,
 others include two further tutorials. For all of these see
-<a href="http://www.mnemosyne.uk/monaco/">here</a>. If you receive the
-program - contact the author as described there - there is also extensive full
-documentation - most of which most users will not need, the tutorials alone
-will probably suffice.
+<a href="http://www.mnemosyne.uk/monaco/">here</a>.
+
+<H2 id="reference">Reference Material</CENTER></H2>
+
+In order to write expressions, you need to know about the available operators
+and functions. You will probably know enough of the former if you are familiar
+with a programming language, especially if it is C/C++. However, that is not
+sufficient to know about most of the many available functions.
 
 <P>
+
+The most useful functions are described in the three tutorial documents,
+especially the first, but distributed through the text. For reference material
+relating not just to functions, but also to operators, options, and entities
+such as constants and variables, you can use the full documentation. Owing to
+its size this is not linked here, but is available from the author. Start with
+the early section whose title refers to references.
+
+<P>
+
+Alternatively, the program contains a number of self-documenting options. To
+find out what they are, run the program with just the option
+<span style="font-family: courier">-help</span>.
+
+<H2>Disclaimer</CENTER></H2>
+
+Neither the author (christopher.dearlove@gmail.com), nor any other person or
+persons associated with this web site or program, are liable for any damages
+arising in contract, tort, or otherwise, from the use of or inability to use
+this site or any material contained in it, or referenced by it, or from any
+action or decision taken as a result of using the site.
 
 </BODY>
 

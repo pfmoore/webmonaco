@@ -1,10 +1,215 @@
-<!doctype html>
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="img/webmonaco-favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Monaco - A Web-based probability calculator</title>
+  <style>
+    :root {
+      --bg-color: #2c3e50;
+      --panel-bg: #34495e;
+      --input-bg: #3b5770;
+      --text-color: #ecf0f1;
+      --highlight: #3498db;
+      --error: #b34040;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    header {
+      background: var(--bg-color);
+      color: var(--text-color);
+      padding: 0.25rem;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem;
+      width: 100%;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* fixed 3 columns */
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .option-item {
+      background: var(--input-bg);
+      padding: 0.25rem;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .option-item input[type="checkbox"] {
+      accent-color: var(--highlight);
+    }
+
+    .inputs-row {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .inputs-row label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      /* font-weight: bold; */
+      font-weight: normal;      /* changed from bold */
+      font-size: 0.95rem;       /* slightly smaller */
+      color: var(--text-color); /* same as body text */
+    }
+
+    .inputs-row input[type="text"],
+    .inputs-row input[type="number"],
+    .inputs-row textarea {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #666;
+      border-radius: 4px;
+      background: var(--input-bg);
+      color: var(--text-color);
+    }
+
+    .inputs-row textarea {
+      resize: vertical;
+      min-height: 4em;
+    }
+
+    .buttons-row {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .buttons-row button,
+    .buttons-row .button-link {
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      background-color: #3e5771;
+      color: var(--text-color);
+      border: 1px solid #7f8c8d;
+      border-radius: 2px;
+      box-shadow: inset 0 0 0 1px #1c2833;
+      transition: background 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+
+    .buttons-row button:hover,
+    .buttons-row .button-link:hover {
+      background-color: #486582;
+    }
+
+    .buttons-row button:active,
+    .buttons-row .button-link:active {
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    @media (max-width: 600px) {
+      /* Don't switch to one-per-line for buttons.
+       * I'm not sure what the logic is for doing so, but
+       * it wastes valuable screen space.
+       */
+      /*
+      .buttons-row {
+        flex-direction: column;
+      }
+      */
+
+      .options-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 300px) {
+      .options-grid {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+
+    .tab-container {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid color-mix(in srgb, var(--input-bg) 60%, white);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px color-mix(in srgb, var(--input-bg) 70%, black);
+    }
+
+    .tab-header {
+      display: flex;
+      border-bottom: 1px solid color-mix(in srgb, var(--input-bg) 60%, white);
+      background-color: color-mix(in srgb, var(--input-bg) 90%, black);
+    }
+
+    .tab-header button {
+      color: var(--text-color);
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+    }
+
+    .tab-header button:hover {
+      background-color: color-mix(in srgb, var(--input-bg) 70%, white);
+    }
+
+    .tab-header button.active {
+      background-color: color-mix(in srgb, var(--input-bg) 60%, white);
+      color: var(--text-color);
+      border-bottom: 2px solid color-mix(in srgb, var(--text-color) 60%, var(--input-bg));
+    }
+
+    .tab-content {
+      padding-left: 1em;
+    }
+
+    .tab-content pre {
+      display: none;
+      background: var(--input-bg);
+      color: var(--text-color);
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .tab-content pre.active {
+      display: block;
+    }
+
+    .tab-content pre.error {
+      color:var(--error);
+    }
+
+    </style>
   <script>
     const submit_calculation = async () => {
         options = Array.from(document.getElementById("checkboxes").getElementsByTagName("input"))
@@ -28,7 +233,7 @@
         var alert_id = setTimeout(() => {
           document.getElementById('progress').textContent = "Request is taking too long - may have crashed...";
         }, 60000)
-        const response = await fetch('/run', {
+        const response = await fetch('https://webmonaco.fly.dev/run', {
             method: "POST",
             body: JSON.stringify(body),
             headers: {
@@ -40,11 +245,15 @@
         document.getElementById('progress').textContent = "";
         console.log(myJson)
         const div_out = document.getElementById('stdout');
-        div_out.textContent = myJson.out.content;
+        div_out.textContent = myJson.out.content.replace(/^\n*|\n*$/g, '');
         const div_err = document.getElementById('stderr');
-        div_err.textContent = myJson.err.content;
-        document.getElementById('command').textContent = myJson.command;
-        document.getElementById('stderr').className = (myJson.rc != 0) ? "text-red-600" : "";
+        div_err.textContent = myJson.err.content.replace(/^\n*|\n*$/g, '');
+        document.getElementById('command').textContent = myJson.command.replace(/^\n*|\n*$/g, '');
+        if (myJson.err.content) {
+          selectTab("stderr");
+        } else {
+          selectTab("stdout");
+        }
         var notifications = [];
         if (myJson.status == "Timeout") {
           notifications.push("Monaco ran for too long and was terminated");
@@ -58,8 +267,6 @@
         if (notifications.length > 0) {
           var n = document.getElementById('notifications');
           n.textContent = notifications.join("<br>");
-          n.className = "text-red-600"
-
         }
         else {
           document.getElementById('notifications').className = "hidden";
@@ -79,103 +286,165 @@
         document.getElementById('stderr').className = "";
         document.getElementById('command').textContent = "Command file appears here";
     }
+
+    function initialise() {
+      var sp = new URLSearchParams(document.location.search)
+      const selected = sp.getAll("checkbox")
+      // Loop through all checkboxes in the grid
+      document.querySelectorAll('.options-grid input[type="checkbox"]').forEach(cb => {
+        // Get the label text associated with the checkbox
+        const labelText = cb.parentElement.textContent.trim();
+
+        // If the label text is in the selected array, check the box
+        if (selected.includes(labelText)) {
+          cb.checked = true;
+        }
+      });
+      document.getElementById('options').value = sp.get("options");
+      document.getElementById('expression').value = sp.get("expression");
+      document.getElementById('number').value = sp.get("number");
+
+      if (sp.has("execute")) submit_calculation();
+    }
   </script>
 </head>
+<body>
+  <header>
+    <h2>Welcome to Monaco!</h2>
+  </header>
 
-<body class="m-5 h-screen bg-fixed bg-gradient-to-tr from-slate-900 to-slate-700 text-slate-500">
-  <h1 class="text-3xl font-bold mb-8">
-    Welcome to Monaco!
-  </h1>
-  <div class="sm:w-1/2">
+  <div class="container">
 
-    <!--
-      Checkbox Area
-      =============
-
-      Layout is
-
-      -exact/-new     -statistics/+statistics     -version
-      -histogram      -cumulative                 -rcumulative
-      -table          -probability                -percent
-
-      collapsing to a single column on narrow devices.
-    -->
-    
-    <div class="grid sm:grid-cols-3 gap-2 mb-8" id="checkboxes">
-      <div class="grid items-center">
-        <label class="flex items-baseline" for="-exact"><input class="mr-2" type="checkbox" id="-exact" value="-exact" onclick="deselect_sibling(this, '-new')">-exact</label>
-        <label class="flex items-baseline" for="-new"><input class="mr-2" type="checkbox" id="-new" value="-new" onclick="deselect_sibling(this, '-exact')">-new</label>
+    <!-- Checkbox Options Grid -->
+    <div class="options-grid" id="checkboxes">
+      <div class="option-item">
+        <label><input type="checkbox" id="-exact" value="-exact" onclick="deselect_sibling(this, '-new')"/> -exact</label>
+        <label><input type="checkbox" id="-new" value="-new" onclick="deselect_sibling(this, '-exact')"/> -new</label>
       </div>
-      <div class="grid items-center">
-        <label class="flex items-baseline" for="-statistics"><input class="mr-2" type="checkbox" id="-statistics" value="-statistics" onclick="deselect_sibling(this, '+statistics')">-statistics</label>
-        <label class="flex items-baseline" for="+statistics"><input class="mr-2" type="checkbox" id="+statistics" value="+statistics" onclick="deselect_sibling(this, '-statistics')">+statistics</label>
+      <div class="option-item">
+        <label><input type="checkbox" id="-statistics" value="-statistics" onclick="deselect_sibling(this, '+statistics')"/> -statistics</label>
+        <label><input type="checkbox" id="+statistics" value="+statistics" onclick="deselect_sibling(this, '-statistics')"/> +statistics</label>
       </div>
-      <div class="grid items-center">
-        <label class="flex items-baseline" for="-table"><input class="mr-2" type="checkbox" id="-table" value="-table">-table</label>
-      </div>
-      <div class="grid items-center">
-        <label class="flex items-baseline" for="-histogram"><input class="mr-2" type="checkbox" id="-histogram" value="-histogram">-histogram</label>
-      </div>
-      <div class="grid items-center">
-        <label class="flex items-baseline" for="-cumulative"><input class="mr-2" type="checkbox" id="-cumulative" value="-cumulative">-cumulative</label>
-      </div>
-      <div class="grid items-center">
-        <label class="flex items-baseline" for="-rcumulative"><input class="mr-2" type="checkbox" id="-rcumulative" value="-rcumulative">-rcumulative</label>
-      </div>
-      <div class="grid items-center">
-        <label class="flex items-baseline" for="-probability"><input class="mr-2" type="checkbox" id="-probability" value="-probability">-probability</label>
-      </div>
-      <div class="grid items-center">
-        <label class="flex items-baseline" for="-percent"><input class="mr-2" type="checkbox" id="-percent" value="-percent">-percent</label>
-      </div>
-      <div class="grid items-center">
-        <label class="flex items-baseline" for="-version"><input class="mr-2" type="checkbox" id="-version" value="-version -size +date">Program Info</label>
-      </div>
+      <div class="option-item"><label><input type="checkbox" value="-table" /> -table</label></div>
+      <div class="option-item"><label><input type="checkbox" value="-histogram" /> -histogram</label></div>
+      <div class="option-item"><label><input type="checkbox" value="-cumulative" /> -cumulative</label></div>
+      <div class="option-item"><label><input type="checkbox" value="-rcumulative" /> -rcumulative</label></div>
+      <div class="option-item"><label><input type="checkbox" value="-probability" /> -probability</label></div>
+      <div class="option-item"><label><input type="checkbox" value="-percent" /> -percent</label></div>
+      <div class="option-item"><label><input type="checkbox" value="-version -size +date" /> Program Info</label></div>
     </div>
 
-    <!--
-      Input box area
-      ==============
+    <!-- Input Fields with Labels -->
+    <div class="inputs-row">
+      <label>
+        Options
+        <input type="text" id="options" placeholder="Options" />
+      </label>
 
-      Options
-      Expression
-      Number
-    
-    -->
-    <div class="grid mb-8">
-    <label for="options">Options</label><input type="text" name="options" id="options">
-    <label for="expression">Expression</label><textarea name="expression" id="expression"></textarea>
-    <label for="number">Number</label><input type="text" name="number" id="number">
-    </div>
+      <label>
+        Expression
+        <textarea id="expression" placeholder="Expression"></textarea>
+      </label>
 
-    <!--
-      Buttons
-      =======
+      <label>
+        Number
+        <input id="number" type="text" placeholder="Number" />
+      </label>
+  </div>
+  
+  <!-- Buttons -->
+  <div class="buttons-row">
+    <button onclick="submit_calculation()">Calculate</button>
+    <button onclick="clear_output()">Clear</button>
+    <a class="button-link" id="checkboxLink" href="" target="_blank">Calculation Link</a>
+    <a class="button-link" href="https://webmonaco.fly.dev/help" target="_blank">Help</button>
+  </div>
 
-      Submit
-    -->
-    <div class="mb-8 text-slate-200">
-      <button class="rounded-lg p-2 bg-zinc-400" onclick="submit_calculation()">Calculate</button>
-      <button class="rounded-lg p-2 bg-zinc-400" onclick="clear_output()">Clear Output</button>
-      <a class="rounded-lg p-2 bg-zinc-400" href="/help">Help File</a>
+  <!-- Output Areas -->
+  <div id="progress" class=""></div>
+  <div id="notifications" class="hidden"></div>
+
+  <div class="tab-container">
+    <div class="tab-header">
+      <button class="tab-btn active" data-target="stdout">Output</button>
+      <button class="tab-btn" data-target="stderr">Errors</button>
+      <button class="tab-btn" data-target="command">Command</button>
     </div>
-    <!--
-      Output Area
-      ===========
-      
-      Output
-    -->
-    <div id="progress" class=""></div>
-    <div id="notifications" class="hidden">
-    </div>
-    <div class="grid mb-8">
-      <pre id="stdout">Program output appears here</pre>
-      <hr>
-      <pre id="stderr">Errors and warnings appear here</pre>
-      <hr>
-      <pre id="command">Command file appears here</pre>
+    <div class="tab-content">
+      <pre class="output active" id="stdout">Program output appears here</pre>
+      <pre class="output error" id="stderr">Errors and warnings appear here</pre>
+      <pre class="output" id="command">Command file appears here</pre>
     </div>
   </div>
-</body>
 
+  <script>
+    const buttons = document.querySelectorAll('.tab-btn');
+    const panes = document.querySelectorAll('.tab-content pre');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => selectTab(btn.dataset.target));
+    });
+
+    // Function to programmatically select a tab by name
+    function selectTab(name) {
+      const btn = document.querySelector(`.tab-btn[data-target="${name}"]`);
+      const pane = document.getElementById(name);
+
+      if (!btn || !pane) {
+        console.warn(`Tab "${name}" not found.`);
+        return;
+      }
+
+      // Deactivate all tabs and panes
+      buttons.forEach(b => b.classList.remove('active'));
+      panes.forEach(p => p.classList.remove('active'));
+
+      // Activate the selected tab
+      btn.classList.add('active');
+      pane.classList.add('active');
+    }
+
+    initialise();
+
+  </script>
+  <script>
+    const baseURL = window.location.href.split('?')[0];
+    const checkboxes = document.querySelectorAll('.options-grid input[type="checkbox"]');
+    const link = document.getElementById('checkboxLink');
+
+    function make_url() {
+      const params = new URLSearchParams();
+
+      // Handle the fixed fields
+      ["options", "expression", "number"]
+          .map(el => [el, document.getElementById(el).value])
+          .filter(ev => ev[1])
+          .forEach(ev => params.append(ev[0], ev[1]));
+
+      // Get all checked checkboxes and extract their values
+      const checkedValues = Array.from(checkboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.parentElement.textContent.trim());
+      checkedValues.forEach(v => params.append('checkbox', v));
+
+      return baseURL + (params.size ? '?' + params.toString() : '');
+    }
+
+    function updateLink() {
+      // Update the link’s href
+      const fullURL = make_url();
+      link.href = fullURL;
+    }
+
+    // Attach event listeners to all checkboxes
+    checkboxes.forEach(cb => cb.addEventListener('change', updateLink));
+
+    ["options", "expression", "number"]
+      .map(el => document.getElementById(el))
+      .forEach(el => el.addEventListener('change', updateLink));
+
+    // Initialize link on page load
+    updateLink();
+  </script>
+</body>
 </html>
