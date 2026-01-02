@@ -2,7 +2,7 @@
 
 <HEAD>
 
-<TITLE>Monaco</TITLE>
+<TITLE>Monaco Help</TITLE>
 
 <META NAME="description" CONTENT="Monaco">
 
@@ -12,7 +12,7 @@
 
 <BODY>
 
-<H1> <CENTER>Monaco</CENTER></H1>
+<H1> <CENTER>How to Use Monaco</CENTER></H1>
 
 This web page allows you to run the program <b>Monaco</b> that can be used to
 answer a wide range of probability problems, most commonly those arising in dice
@@ -144,15 +144,8 @@ selected to see it.
 
 Most users can ignore the third tab
 <span style="font-family: helvetica">Command</span> and its panel. (It contains
-a command file - a modified version of the line - assembled by the web page to
-make the run. It includes some options that are needed here, but not by most
-other users.)
-
-<P>
-
-As well as the <span style="font-family: helvetica">Calculate</span> button,
-there are three other buttons on its row. The latter two buttons have useful
-actions available by right clicking on the button.
+a command file assembled by the web page to make the run. It includes some
+additional options that are needed here, but can be ignored most users.)
 
 <P>
 
@@ -196,8 +189,8 @@ use of the program described in all other documents.
 <P>
 
 Monaco itself is a command line program. You run it by putting first the
-options, then the expression - and sometimes a third kind of parameter that the
-input box <span style="font-family: helvetica">Number</span> is for - on a
+options, then the expression, and sometimes a third kind of parameter that the
+input box <span style="font-family: helvetica">Number</span> is for, on a
 command line. Thus the <i>D&D</i> example above corresponds to using the command
 line:
 
@@ -445,8 +438,9 @@ without the final 6, using the term
 <span style="font-family: courier">while(r0:=d6;r0!=6,r1+=r0)</span>. The value
 of this term is the last value of its second argument. This is the required sum
 if that is the complete expression, using that
-<span style="font-family: courier">r1</span> is initialised to zero. This loop
-cannot be used in exact mode.
+<span style="font-family: courier">r1</span> is initialised to zero. This
+example of this loop cannot be used in exact mode, as it creates variable, and
+also unbounded, randomness
 
 <P>
 
