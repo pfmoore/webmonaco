@@ -23,8 +23,9 @@ and card games.
 Monaco is a program that you can run locally. However, that takes some setting
 up. This web page allows you to run the program remotely in a broswer, even
 using a device such as a smartphone that you cannot run Monaco on directly. Most
-of the features of Monaco are available, the main exception being that run time
-is limited - but you can still do a lot in the time allowed.
+of the features of Monaco are available, but one exception is that run time is
+limited - however, you can still do a lot in the time allowed. See also the
+section <a href="#tutorials">Tutorials</a> below for some other restrictions.
 
 <H2 id="example">An Example</CENTER></H2>
 
@@ -40,8 +41,8 @@ Monaco is using the <i>expression</i>
 <span style="font-family: courier">sum(tail3(sorted4d6))</span>.
 For now we just assume that this expression works - more material about
 expressions is presented in the section <a href="#expressions">Expressions</a>
-below, including an explanation of that expression in the section
-<a href="#dungeons">The <i>D&D</i> Example</a> below.
+below, including an explanation of that expression in the subsection
+<a href="#dungeons">The <i>D&D</i> Example</a>.
 
 <P>
 
@@ -103,9 +104,9 @@ appropriate to this example, and at this point do not try to use
 
 <P>
 
-The checkbox <span style="font-family: helvetica">Program Info</span> selects
-three options that provide information about the program and the run, including
-the program version and copyright information.
+The checkbox <span style="font-family: helvetica">+version</span> selects an
+option that provides information about the program and the run, including the
+program version and copyright information.
 
 <P>
 
@@ -174,11 +175,12 @@ clicking on this button.
 
 <H2 id="next">Next Steps</CENTER></H2>
 
-You can now proceed to either read the following section to learn more about
-expressions, which together with use of the
-<a href="#reference">reference material</a> described below might suffice to
-use the program, or you can read the <a href="#tutorials">tutorial<a>
-referenced below - or you can do some or all of both.
+You can now proceed to either read the following section
+<a href="#expressions">Expressions</a>to learn more about expressions, which
+together with use of the <a href="#reference">reference material</a> described
+below might suffice to use the program, or you can read the
+<a href="#tutorials">tutorials<a> referenced below - or you can do some or all
+of both.
 
 <P>
 
@@ -242,8 +244,9 @@ is always one.
 
 <P>
 
-The available operators are modelled after those in standard C/C++, with some
-changes (assignment uses <span style="font-family: courier">:=</span> not
+The available operators are modelled after those in standard C and C++, with
+some changes (in particular assignment uses
+<span style="font-family: courier">:=</span> not
 <span style="font-family: courier">=</span> and logical operators are not
 doubled) and some additions (including
 <span style="font-family: courier">~</span>
@@ -309,7 +312,7 @@ a list, thus <span style="font-family: courier">shuffle{2,3,5,7}</span> has 24
 possible values. This term uses that a single braced list argument used as
 <span style="font-family: courier">({</span>...<span style="font-family: courier">})</span>
 can be replaced by <span style="font-family: courier">{</span>...
-<span style="font-family: courier">}</span> for any ...
+<span style="font-family: courier">}</span> for any valid ...
 
 <H3>Lists</H3>
 
@@ -343,8 +346,10 @@ There are ten integer variables called
 
 We assign to a variable using, for example,
 <span style="font-family: courier">v0:=3d6</span>, or using a modifying
-assignment, for example <span style="font-family: courier">v0+=3d6</span>. List
-variables have a constant length, so, for example, once the length of
+assignment, for example <span style="font-family: courier">v0+=3d6</span>, which
+adds the list <span style="font-family: courier">3d6</span> to the list variable
+<span style="font-family: courier">v0</span>. List variables have a constant
+length, so, for example, once the length of
 <span style="font-family: courier">v0</span> is set it cannot be changed.
 Either of those assignments sets the length of
 <span style="font-family: courier">v0</span> to 3 if not already set.
@@ -391,11 +396,17 @@ lists <span style="font-family: courier">v0</span> to
 list length. The lengths of <span style="font-family: courier">u0</span> to
 <span style="font-family: courier">u9</span> are
 <span style="font-family: courier">k0</span> to
-<span style="font-family: courier">k9</span>, but these cannot be set. In
-addition, for example, the variable
+<span style="font-family: courier">k9</span>, but these cannot be set. Constants
+must be set at the start of the main expression.
+
+<P>
+
+In addition, for example, the variable
 <span style="font-family: courier">i01</span> is element
 <span style="font-family: courier">r1</span> of
-<span style="font-family: courier">u0</span>; this cannot be modified.
+<span style="font-family: courier">u0</span>; the value of this variable can
+change as  span style="font-family: courier">r1</span> changes, but it cannot be
+modified.
 
 <H3>Branching and Loops</H3>
 
@@ -403,7 +414,7 @@ Branches and loops are implemented within the expression, not outside it.
 
 <P>
 
-Branching can be by using operators, as in C/C++. The ternary
+Branching can be by using operators, as in C and C++. The ternary
 <span style="font-family: courier">?:</span> operator evaluates either its
 second or third operand according to the value of its first operand (true or
 false). Also, the logical and <span style="font-family: courier">&</span> and
@@ -457,8 +468,7 @@ only a term, not a complete expression:
 <span style="font-family: courier">rloop1(s0,e01*=(i01?e01:e01*e01))</span>,
 which loops <span style="font-family: courier">r1</span> from 0, inclusive, to
 <span style="font-family: courier">s0</span>, exclusive. The term's value is
-also the final value of the second argument, but that is not very useful here
-(nor is the whole term).
+also the final value of the second argument, but that is not very useful here.
 
 <H3>Faster Exact Results</H3>
 
@@ -471,9 +481,9 @@ which has no effect, and so generates just one representative of each
 significantly different set of dice, the one where they are sorted in
 non-descending order. It handles that not all sets of dice are equally likely.
 The time is reduced to about 1.5 milliseconds. Increasing 9 dice to 12 dice the
-time required for the unsorted case would be about 10 minutes, but this is not
-allowed here, while the sorted case takes about 4 milliseconds, which is faster
-by over five orders of magnitude.
+time required for the unsorted case would be about 10 minutes, but that length
+of run is not allowed here, while the sorted case takes about 4 milliseconds,
+which is faster by over five orders of magnitude, and is easily allowed.
 
 <P>
 
@@ -481,7 +491,7 @@ There are more terms like <span style="font-family: courier">sorted9d6</span>
 for other cases, including drawing cards as well as rolling dice, and for other
 forms of symmetry than the "all dice are interchangeable" used here. They rely
 on the user to identify which term is appropriate, but the gains can make that
-worthwhile.
+worthwhile - and, as in the example above, might even be necessary.
 
 <H3 id="dungeons">The <i>D&D</i> Example</H3>
 
@@ -490,19 +500,20 @@ The <i>D&D</i> example above used the expression
 such an expression from the inside out. We roll four interchangeable standard
 dice, which is <span style="font-family: courier">sorted4d6</span>. We want the
 three largest dice, which since that list is sorted, as described in the
-previous section, are its last three elements, which we can extract as a list
+previous subsection, are its last three elements, which we can extract as a list
 using the function <span style="font-family: courier">tail3</span>. Finally, we
 want the sum of those three dice using the function
 <span style="font-family: courier">sum</span>.
 
 <P>
 
-Working from the outside, as the program does, the expression is an integer,
+Working from the outside in, as the program does, the expression is an integer,
 <span style="font-family: courier">sum</span> is an integer function with a list
 argument of any length, <span style="font-family: courier">tail3</span> is a
 list function whose result is a list with length 3, and which has a single list
 argument that is usually longer, and
-<span style="font-family: courier">sorted4d6</span> is a list with length 4.
+<span style="font-family: courier">sorted4d6</span> is a list with length 4. At
+each step the program knows what type of term is expected.
 
 <H2 id="approximate">Approximate Mode</H2>
 
@@ -512,12 +523,15 @@ mode is better.
 
 <P>
 
-Approximate mode is selected by not selecting the option
-<span style="font-family: courier">-exact</span>. A number must be entered in
-the <span style="font-family: courier">Numbers</span> input box, and the
-expression is evaluated that many times, randomly - except that to produce
-different results from each run, also select the option
-<span style="font-family: courier">-new</span>.
+Approximate mode is used whenever the option
+<span style="font-family: courier">-exact</span> is not selected. A number must
+be entered in the <span style="font-family: courier">Numbers</span> input box,
+and the expression is evaluated that many times, randomly - except that to
+produce different results from each run, also select the option
+<span style="font-family: courier">-new</span>. You should thus usually select
+one or the other of the options
+<span style="font-family: courier">-exact</span> or
+<span style="font-family: courier">-new</span> (you cannot select both).
 
 <P>
 
@@ -552,19 +566,29 @@ There is a
 for the program, but, as described in the section
 <a href="#next">Next Steps</a> above, to use it - or any other documentation -
 you need to understand the difference between how you would run a local copy of
-the program, and how you use this web page.
+the program, and how you use this web page. The two forms of use require you to
+enter the same program parameters, the difference just being how this is done.
 
 <P>
 
 The tutorial is one of the immediately available documents for the program,
 others include two further tutorials. For all of these see
-<a href="http://www.mnemosyne.uk/monaco/">here</a>.
+<a href="http://www.mnemosyne.uk/monaco/">here</a>. However, for many examples
+the material in the first tutorial suffices.
+
+<P>
+
+In addition to the parameters change described above, and the previously noted
+limit on run time, also note that using this web page you cannot use input
+functions or files, and that all output is collected and reported at the end of
+a run, never during the run. Note that if a run exceeds the time limit then all
+output is lost.
 
 <H2 id="reference">Reference Material</CENTER></H2>
 
 In order to write expressions, you need to know about the available operators
 and functions. You will probably know enough of the former if you are familiar
-with a programming language, especially if it is C/C++. However, that is not
+with a programming language, especially if it is C or C++. However, that is not
 sufficient to know about most of the many available functions.
 
 <P>
