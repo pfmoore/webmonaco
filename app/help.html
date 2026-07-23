@@ -22,10 +22,11 @@ and card games.
 
 Monaco is a program that you can run locally. However, that takes some setting
 up. This web page allows you to run the program remotely in a broswer, even
-using a device such as a smartphone that you cannot run Monaco on directly. Most
-of the features of Monaco are available, but one exception is that run time is
-limited - however, you can still do a lot in the time allowed. See also the
-section <a href="#tutorials">Tutorials</a> below for some other restrictions.
+using a device such as a smartphone that you cannot run the program on directly.
+Most of the features of the program are available, but one exception is that run
+time is limited - however, you can still do a lot in the time allowed. See also
+the section <a href="#tutorials">Tutorials</a> below for some other
+restrictions.
 
 <H2 id="example">An Example</CENTER></H2>
 
@@ -36,8 +37,8 @@ the game <i>Dungeons & Dragons</i> (or <i>D&D</i>) [TSR, 1974].
 <P>
 
 We start with the current usual way to produce such a score: roll four dice,
-pick the largest three and add them up. A straightforward way to do this in
-Monaco is using the <i>expression</i>
+pick the largest three and add them up. A straightforward way to do this is
+using the <i>expression</i>
 <span style="font-family: courier">sum(tail3(sorted4d6))</span>.
 For now we just assume that this expression works - more material about
 expressions is presented in the section <a href="#expressions">Expressions</a>
@@ -104,9 +105,11 @@ appropriate to this example, and at this point do not try to use
 
 <P>
 
-The checkbox <span style="font-family: helvetica">+version</span> selects an
-option that provides information about the program and the run, including the
-program version and copyright information.
+The checkbox <span style="font-family: helvetica">+Program Info</span> selects
+the option <span style="font-family: helvetica">+version</span> that reports
+information about the program and the run, including the program version and
+copyright information, the integer size used (always 64 bits) and the run time
+and date.
 
 <P>
 
@@ -146,7 +149,7 @@ selected to see it.
 Most users can ignore the third tab
 <span style="font-family: helvetica">Command</span> and its panel. (It contains
 a command file assembled by the web page to make the run. It includes some
-additional options that are needed here, but can be ignored most users.)
+additional options that are needed here, but can be ignored by most users.)
 
 <P>
 
@@ -176,7 +179,7 @@ clicking on this button.
 <H2 id="next">Next Steps</CENTER></H2>
 
 You can now proceed to either read the following section
-<a href="#expressions">Expressions</a>to learn more about expressions, which
+<a href="#expressions">Expressions</a> to learn more about expressions, which
 together with use of the <a href="#reference">reference material</a> described
 below might suffice to use the program, or you can read the
 <a href="#tutorials">tutorials<a> referenced below - or you can do some or all
@@ -287,8 +290,8 @@ For example, <span style="font-family: courier">product(3d6)</span> is a valid
 term, as <span style="font-family: courier">product</span> is a function with a
 list argument and an integer value. This
 <span style="font-family: courier">3d6</span> is not the sum of three dice but
-is a list of three dice values. Monaco can tell the difference between the two
-uses of 3d6 because it always knows which type of term is expected.
+is a list of three dice values. The program can tell the difference between the
+two uses of 3d6 because it always knows which type of term is expected.
 
 <P>
 
@@ -352,7 +355,7 @@ adds the list <span style="font-family: courier">3d6</span> to the list variable
 length, so, for example, once the length of
 <span style="font-family: courier">v0</span> is set it cannot be changed.
 Either of those assignments sets the length of
-<span style="font-family: courier">v0</span> to 3 if not already set.
+<span style="font-family: courier">v0</span> to 3 if it is not already set.
 
 <P>
 
@@ -405,7 +408,7 @@ In addition, for example, the variable
 <span style="font-family: courier">i01</span> is element
 <span style="font-family: courier">r1</span> of
 <span style="font-family: courier">u0</span>; the value of this variable can
-change as  span style="font-family: courier">r1</span> changes, but it cannot be
+change as <span style="font-family: courier">r1</span> changes, but it cannot be
 modified.
 
 <H3>Branching and Loops</H3>
@@ -474,15 +477,15 @@ also the final value of the second argument, but that is not very useful here.
 
 Rolling nine standard dice the number of different values rolled is
 <span style="font-family: courier">count_diff(9d6)</span>. Here that takes
-just under 5 seconds. We can greatly speed that up by instead using
+about 5 seconds. We can greatly speed that up by instead using
 <span style="font-family: courier">count_diff(sorted9d6)</span>. The list term
 <span style="font-family: courier">sorted9d6</span> assumes that which die is
 which has no effect, and so generates just one representative of each
 significantly different set of dice, the one where they are sorted in
 non-descending order. It handles that not all sets of dice are equally likely.
-The time is reduced to about 1.5 milliseconds. Increasing 9 dice to 12 dice the
+The time is reduced to under 2 milliseconds. Increasing 9 dice to 12 dice the
 time required for the unsorted case would be about 10 minutes, but that length
-of run is not allowed here, while the sorted case takes about 4 milliseconds,
+of run is not allowed here, while the sorted case takes about 5 milliseconds,
 which is faster by over five orders of magnitude, and is easily allowed.
 
 <P>
